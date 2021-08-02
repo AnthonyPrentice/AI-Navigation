@@ -33,7 +33,7 @@ class Car(pygame.sprite.Sprite, Sprite):
     rect = image.get_rect()
     rect.center = (width/2, height/2)
     speed = 2
-    angle = 0
+    angle = 1.57
     sensors = list() 
     def initSensors(self):
         for x in range(0, 4):

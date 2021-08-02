@@ -18,10 +18,10 @@ pi = math.pi
 wall_sprites = pygame.sprite.Group()
 car_sprites = pygame.sprite.Group()
 sensor_sprites =  pygame.sprite.Group()
-node_sprites = pygame.sprite.Group()
+#node_sprites = pygame.sprite.Group()
 walls = list()
 cars = list()
-nodes = list()
+#nodes = list()
 
 #init walls
 for x in range(0,16):
@@ -52,12 +52,11 @@ walls[15].finish = True
 cars.append(Car())
 car_sprites.add(cars[0])
 cars[0].move(200,250)
-cars[0].rotate(45)
 #car sensors
 for x in range(0, 4):
     sensor_sprites.add(cars[0].sensors[x])
 
-#ai nodes
+'''ai nodes
 for x in range(0, 7):
     nodes.append(Node())
     node_sprites.add(nodes[x])
@@ -68,35 +67,27 @@ nodes[3].move(600, 200), nodes[3].color(green)
 nodes[4].move(600, 500), nodes[4].color(green)
 nodes[5].move(800, 500), nodes[5].color(green)
 nodes[6].move(800, 130), nodes[6].color(green)
+'''
 
 #program running
 drive = True
 run = True
-#direction = "w"
-node = 0
+#node = 0
 while run:
     clock.tick(fps)
     screen.fill(white)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    '''
-    if direction == "a":
-        cars[0].angle = pi
-        cars[0].drive()
-    elif direction == "s":
-        cars[0].angle = pi/2
-        cars[0].drive()
-    elif direction == "d":
-        cars[0].angle = 0
-        cars[0].drive()
-    elif direction == "w":
-        cars[0].angle = (3*pi)/2
-        cars[0].drive()
-    else:
-        pass
-    '''
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                cars[0].angle -= .5
+            if event.key == pygame.K_RIGHT:
+                cars[0].angle += .5
 
+    cars[0].drive()
+
+    '''
     if node < 7:
         cars[0].angle = cars[0].getDirection(nodes[node])
         cars[0].drive()
@@ -104,6 +95,7 @@ while run:
         if nodeCol:
             nodes[node].move(-20, 1)
             node += 1
+    '''
 
     #sensor detection
     for sensor in cars[0].sensors:
@@ -120,11 +112,11 @@ while run:
     wall_sprites.update()
     car_sprites.update()
     sensor_sprites.update()
-    node_sprites.update()
+    #node_sprites.update()
     wall_sprites.draw(screen)
     car_sprites.draw(screen)
     sensor_sprites.draw(screen)
-    node_sprites.draw(screen)
+    #node_sprites.draw(screen)
 
     pygame.display.update()
 
