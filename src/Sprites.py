@@ -6,13 +6,20 @@ white, blue , black, red, green = ((230, 230, 230), (0, 0, 255), (0, 0, 0),
                                  (255, 0, 0), (0, 128, 0))
 #-------------------------------------------------------------------------------
 class Sprite():
+    x = 0.0 #to keep track of position as a double instead of int 
+    y = 0.0 #since pygame only stores positions as ints, which causes data to be lost
+            #when operations involving positions occur i.e. drive() for Car
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
     def rotate(self, angle):
         self.image = pygame.transform.rotate(self.image, angle)
         self.rect = self.image.get_rect(center=self.rect.center)
     def move(self, x, y):
         self.rect.center = (x, y)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
     def resize(self, width, height):
         self.image = pygame.Surface((width, height))
         self.rect = self.image.get_rect(center=self.rect.center)
@@ -33,7 +40,7 @@ class Car(pygame.sprite.Sprite, Sprite):
     rect = image.get_rect()
     rect.center = (width/2, height/2)
     speed = 2
-    angle = 1.57
+    angle = 1.57 
     sensors = list() 
     def initSensors(self):
         for x in range(0, 4):
@@ -54,8 +61,10 @@ class Car(pygame.sprite.Sprite, Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.initSensors()
     def drive(self): #angle is in radians
-        self.rect.centerx = self.rect.centerx + (self.speed*math.cos(self.angle))
-        self.rect.centery = self.rect.centery + (self.speed*math.sin(self.angle))
+        self.x = self.x + (self.speed*math.cos(self.angle))
+        self.y = self.y + (self.speed*math.sin(self.angle))
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
     def getPos(self):
         position = [self.rect.centerx, self.rect.centery]
         return position
@@ -137,9 +146,3 @@ class Sensor(pygame.sprite.Sprite, Sprite):
                 pass
         self.calibrate(car)
 #-------------------------------------------------------------------------------
-class Node(pygame.sprite.Sprite, Sprite):
-    image = pygame.Surface((5, 5))
-    image.fill(green)
-    rect = image.get_rect()
-    rect.center = (70, 20)
-

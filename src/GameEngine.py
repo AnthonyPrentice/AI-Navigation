@@ -18,10 +18,8 @@ pi = math.pi
 wall_sprites = pygame.sprite.Group()
 car_sprites = pygame.sprite.Group()
 sensor_sprites =  pygame.sprite.Group()
-#node_sprites = pygame.sprite.Group()
 walls = list()
 cars = list()
-#nodes = list()
 
 #init walls
 for x in range(0,16):
@@ -56,23 +54,9 @@ cars[0].move(200,250)
 for x in range(0, 4):
     sensor_sprites.add(cars[0].sensors[x])
 
-'''ai nodes
-for x in range(0, 7):
-    nodes.append(Node())
-    node_sprites.add(nodes[x])
-nodes[0].move(200, 500), nodes[0].color(green)
-nodes[1].move(400, 500), nodes[1].color(green)
-nodes[2].move(400, 200), nodes[2].color(green)
-nodes[3].move(600, 200), nodes[3].color(green)
-nodes[4].move(600, 500), nodes[4].color(green)
-nodes[5].move(800, 500), nodes[5].color(green)
-nodes[6].move(800, 130), nodes[6].color(green)
-'''
-
 #program running
 drive = True
 run = True
-#node = 0
 while run:
     clock.tick(fps)
     screen.fill(white)
@@ -81,21 +65,11 @@ while run:
             run = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                cars[0].angle -= .5
+                cars[0].angle -= .25
             if event.key == pygame.K_RIGHT:
-                cars[0].angle += .5
+                cars[0].angle += .25
 
     cars[0].drive()
-
-    '''
-    if node < 7:
-        cars[0].angle = cars[0].getDirection(nodes[node])
-        cars[0].drive()
-        nodeCol = pygame.sprite.spritecollideany(cars[0], node_sprites)
-        if nodeCol:
-            nodes[node].move(-20, 1)
-            node += 1
-    '''
 
     #sensor detection
     for sensor in cars[0].sensors:
@@ -112,11 +86,9 @@ while run:
     wall_sprites.update()
     car_sprites.update()
     sensor_sprites.update()
-    #node_sprites.update()
     wall_sprites.draw(screen)
     car_sprites.draw(screen)
     sensor_sprites.draw(screen)
-    #node_sprites.draw(screen)
 
     pygame.display.update()
 
