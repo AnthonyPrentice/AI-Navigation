@@ -4,7 +4,7 @@ from  Sprites import *
 
 #configurations
 width, height = 1000, 700
-white, blue , black, red, green = ((230, 230, 230), (0, 0, 255), (0, 0, 0),
+white, blue, black, red, green = ((230, 230, 230), (0, 0, 255), (0, 0, 0),
                                  (255, 0, 0), (0, 128, 0))
 
 pygame.init()
@@ -49,12 +49,13 @@ walls[15].finish = True
 #cars
 cars.append(Car())
 car_sprites.add(cars[0])
-cars[0].move(200,250)
+cars[0].move(200,250),cars[0].rotate(90)
 #car sensors
 for x in range(0, 4):
     sensor_sprites.add(cars[0].sensors[x])
 
 #program running
+leftOrRight = 0
 drive = True
 run = True
 while run:
@@ -65,11 +66,13 @@ while run:
             run = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                cars[0].angle -= .25
+                leftOrRight -= .25
             if event.key == pygame.K_RIGHT:
-                cars[0].angle += .25
+                leftOrRight += .25
 
-    cars[0].drive()
+    #driving 
+    cars[0].drive(leftOrRight) 
+    leftOrRight = 0
 
     #sensor detection
     for sensor in cars[0].sensors:
@@ -80,7 +83,7 @@ while run:
     col = pygame.sprite.spritecollideany(cars[0], wall_sprites)
     if col:
         cars[0].speed = 0
-        cars[0].image.fill(green)
+        cars[0].color(green)
 
     #Displaying to screen
     wall_sprites.update()
