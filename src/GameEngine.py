@@ -66,18 +66,13 @@ while run:
             run = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                leftOrRight -= .25
+                leftOrRight -= .25 #steering angle in rads
             if event.key == pygame.K_RIGHT:
                 leftOrRight += .25
 
     #driving 
-    cars[0].drive(leftOrRight) 
+    cars[0].drive(leftOrRight, wall_sprites) 
     leftOrRight = 0
-
-    #sensor detection
-    for sensor in cars[0].sensors:
-        sensor.calibrate(cars[0])
-        sensor.see(cars[0], wall_sprites)
 
     #car collisions
     col = pygame.sprite.spritecollideany(cars[0], wall_sprites)
